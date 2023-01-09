@@ -1,4 +1,5 @@
 import turtle
+import pygame
 
 # draw screen
 screen = turtle.Screen()
@@ -6,6 +7,10 @@ screen.title("Breakout")
 screen.bgcolor("black")
 screen.setup(width=700, height=800)
 screen.tracer(0)
+
+pygame.init()
+sfx_bop = pygame.mixer.Sound('pong-turtle_bounce.wav')
+sfx_lost_ball = pygame.mixer.Sound('pong-turtle_258020__kodack__arcade-bleep-sound.wav')
 
 
 # Function that draw a paddle
@@ -63,8 +68,6 @@ hud_score.write("Score: 0", align="center", font=("Press Start 2P", 24, "normal"
 hud_game_over = draw()
 hud_game_over.hideturtle()
 hud_game_over.goto(0, 20)
-
-
 
 # draw walls
 upper_wall = draw()
@@ -152,6 +155,7 @@ while True:
     # collision with the upper wall
     if ball.ycor() > 350:
 
+        sfx_bop.play()
         ball.sety(350)
         ball.dy *= -1
 
@@ -162,6 +166,7 @@ while True:
     # collision with lower wall
     if ball.ycor() < -370:
 
+        sfx_lost_ball.play()
         lives += 1
         hud_lives.clear()
         hud_lives.write("lives: {}".format(lives), align="center", font=("Press Start 2P", 24, "normal"))
@@ -175,6 +180,7 @@ while True:
     # collision with left wall
     if ball.xcor() < -335:
 
+        sfx_bop.play()
         ball.setx(-335)
         ball.dx *= -1
 
@@ -185,6 +191,7 @@ while True:
     # collision with right wall
     if ball.xcor() > 335:
 
+        sfx_bop.play()
         ball.setx(335)
         ball.dx *= -1
 
@@ -196,6 +203,7 @@ while True:
     # the right side
     if ball.ycor() < -340 and player.xcor() < ball.xcor() < player.xcor() + 30 and ball.dx == -1:
 
+        sfx_bop.play()
         ball.sety(-340)
         ball.dy *= -1
         ball.dx *= -1
@@ -208,6 +216,7 @@ while True:
     # the left side
     elif ball.ycor() < -340 and player.xcor() <= ball.xcor() <= player.xcor() + 30 and ball.dx == 1:
 
+        sfx_bop.play()
         ball.sety(-340)
         ball.dy *= -1
 
@@ -219,6 +228,7 @@ while True:
     # the left side
     elif ball.ycor() < -340 and player.xcor() - 30 < ball.xcor() < player.xcor() and ball.dx == 1:
 
+        sfx_bop.play()
         ball.sety(-340)
         ball.dy *= -1
         ball.dx *= -1
@@ -231,6 +241,7 @@ while True:
     # the right side
     elif ball.ycor() < -340 and player.xcor() - 30 <= ball.xcor() <= player.xcor() and ball.dx == -1:
 
+        sfx_bop.play()
         ball.sety(-340)
         ball.dy *= -1
 
@@ -241,6 +252,8 @@ while True:
     for i in range(len(bricks)):
 
         if collide_brick(ball, bricks[i]) == 1:
+
+            sfx_bop.play()
 
             if bricks[i].color()[0] == "red":
 
